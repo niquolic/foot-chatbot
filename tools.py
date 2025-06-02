@@ -17,18 +17,50 @@ HEADERS = {
 def search_team(team_name: str) -> str:
     """Recherche une équipe de football par nom et retourne les infos principales."""
     try:
+        # Vérifier la clé API
+        if not API_KEY:
+            return "Erreur : La clé API n'est pas configurée. Veuillez vérifier votre fichier config.env"
+            
+        print(f"Utilisation de la clé API : {API_KEY[:5]}...")
+        
         url = f"{API_URL}/teams"
-        params = {"name": team_name}
+        params = {"search": team_name}
+        
+        print(f"URL de la requête : {url}")
+        print(f"Paramètres : {params}")
+        print(f"Headers : {HEADERS}")
+        
         response = requests.get(url, headers=HEADERS, params=params, timeout=10)
+        
+        print(f"Status Code : {response.status_code}")
+        print(f"Response Headers : {dict(response.headers)}")
+        print(f"Response Content : {response.text[:500]}")
+        
         response.raise_for_status()
         data = response.json()
+        
         if not data.get("response"):
-            return f"Aucune équipe trouvée pour '{team_name}'."
-        team = data["response"][0]["team"]
-        country = data["response"][0]["country"]["name"]
-        return f"Équipe : {team['name']} ({country})\nID : {team['id']}\nFondée : {team.get('founded', 'N/A')}\nLogo : {team['logo']}"
+            return f"Aucune équipe trouvée pour '{team_name}'. Veuillez vérifier l'orthographe ou essayer un autre nom."
+        
+        # Accès corrigé aux données de l'équipe
+        team_data = data["response"][0]
+        team = team_data["team"]
+        venue = team_data.get("venue", {})
+        
+        return f"""Équipe : {team['name']} ({team['country']})
+ID : {team['id']}
+Code : {team['code']}
+Fondée : {team.get('founded', 'N/A')}
+Stade : {venue.get('name', 'N/A')}
+Capacité : {venue.get('capacity', 'N/A')}
+Surface : {venue.get('surface', 'N/A')}
+Logo : {team['logo']}"""
+    except requests.exceptions.RequestException as e:
+        print(f"Erreur de requête : {str(e)}")
+        return f"Erreur de connexion à l'API : {str(e)}"
     except Exception as e:
-        return f"Erreur : {str(e)}"
+        print(f"Erreur inattendue : {str(e)}")
+        return f"Erreur inattendue : {str(e)}"
 
 @tool
 def next_fixtures(team_id: str) -> str:
@@ -61,18 +93,40 @@ def league_standings(league_id: str, season: str) -> str:
         response = requests.get(url, headers=HEADERS, params=params, timeout=10)
         response.raise_for_status()
         data = response.json()
+        
         if not data.get("response"):
             return f"Aucun classement trouvé pour la ligue {league_id} saison {season}."
+        
         standings = data["response"][0]["league"]["standings"][0]
         table = []
         for team in standings[:5]:  # Top 5
             rank = team["rank"]
             name = team["team"]["name"]
             pts = team["points"]
-            table.append(f"{rank}. {name} - {pts} pts")
+            played = team["all"]["played"]
+            won = team["all"]["win"]
+            drawn = team["all"]["draw"]
+            lost = team["all"]["lose"]
+            goals_for = team["all"]["goals"]["for"]
+            goals_against = team["all"]["goals"]["against"]
+            table.append(f"{rank}. {name} - {pts} pts (J:{played} V:{won} N:{drawn} D:{lost} BP:{goals_for} BC:{goals_against})")
         return "\n".join(table)
     except Exception as e:
         return f"Erreur : {str(e)}"
+
+def parse_league_standings_input(input_str: str) -> tuple[str, str]:
+    """Parse l'entrée string en league_id et season."""
+    try:
+        league_id, season = input_str.split(",")
+        return league_id.strip(), season.strip()
+    except:
+        return "39", "2023"  # Valeurs par défaut pour Premier League
+
+@tool
+def league_standings_string(input_str: str) -> str:
+    """Version string de la fonction league_standings."""
+    league_id, season = parse_league_standings_input(input_str)
+    return league_standings(league_id, season)
 
 @tool
 def last_results(team_id: str) -> str:
@@ -114,8 +168,6 @@ def search_league(league_name: str) -> str:
         return f"League : {league['name']} ({country})\nID : {league['id']}"
     except Exception as e:
         return f"Erreur : {str(e)}"
-
-league_standings_string = create_string_input_tool(league_standings, "league_standings")
 
 if __name__ == "__main__":
     print(search_team.invoke("manchester united"))

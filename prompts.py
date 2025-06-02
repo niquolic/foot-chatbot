@@ -34,4 +34,4 @@ Voici l'entrée de l'utilisateur (n'oubliez pas de répondre avec un extrait de 
 """
 
 INITIAL_MESSAGE = """Comment puis-je vous aider ?"""
-CHAT_INPUT_PLACEHOLDER = "Demandez-moi n'importe quoi sur la météo ! Essayez : 'Quelle est la météo à Lyon ?'"
+CHAT_INPUT_PLACEHOLDER = "Posez votre question sur le football ! Exemple : 'Quel est le classement de la Premier League ?'"
