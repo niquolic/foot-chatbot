@@ -3,23 +3,38 @@ Utility functions for creating LangChain-compatible tools
 """
 
 import inspect
-from typing import get_type_hints
+import typing
+from typing import get_type_hints, Annotated
 from langchain_core.tools import tool
+
 
 def create_string_input_tool(func, tool_name: str = None):
     """
     Creates a string-input wrapper for any multi-parameter function.
-    
-    Args:
-        func: The original function to wrap
-        tool_name: Optional name for the tool (defaults to func.__name__ + "_string")
-    
-    Returns:
-        A LangChain tool that accepts a single string input
     """
-    # Get function info
+    # --- Correction pour les bugs Annotated, ArgsSchema, SkipValidation, Optional, Callable ---
+    globalns = getattr(func, '__globals__', {})
+    import typing
+    if 'Annotated' not in globalns:
+        globalns['Annotated'] = typing.Annotated
+    if 'ArgsSchema' not in globalns:
+        class ArgsSchema: pass
+        globalns['ArgsSchema'] = ArgsSchema
+    if 'SkipValidation' not in globalns:
+        class SkipValidation: pass
+        globalns['SkipValidation'] = SkipValidation
+    if 'Optional' not in globalns:
+        globalns['Optional'] = typing.Optional
+    if 'Callable' not in globalns:
+        globalns['Callable'] = typing.Callable
+    if 'Any' not in globalns:
+        globalns['Any'] = typing.Any
+    if 'Awaitable' not in globalns:
+        globalns['Awaitable'] = typing.Awaitable
+    # ---------------------------------------------------------------------
+
     sig = inspect.signature(func)
-    type_hints = get_type_hints(func)
+    type_hints = get_type_hints(func, globalns)
     param_names = list(sig.parameters.keys())
     
     def string_wrapper(input_string: str):

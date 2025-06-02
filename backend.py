@@ -109,34 +109,14 @@ class ChatBackend:
     def _setup_tools(self) -> List:
         """
         Set up tools that the AI can use during conversations.
-        
-        Tools extend the AI's capabilities beyond text generation.
-        Examples of tools:
-        - Weather lookup (included)
-        - Web search
-        - Database queries
-        - File operations
-        - API calls
-        
-        To add a new tool:
-        1. Create the tool function in tools.py
-        2. Import it at the top of this file
-        3. Add it to the list returned here
-        
+
         Returns:
             List: Available tools for the AI agent
         """
         return [
-            tools.geocode_city,              # City to coordinates conversion
-            tools.get_city_temperature,
-            tools.get_city_precipitation,
-            tools.get_city_wind,
-            tools.get_city_wind_forecast,
-            # Weather lookup by coordinates
-            # You can include multiple tools here as needed:
-            # get_stock_price,
-            # search_web,
-            # query_database,
+            tools.search_team,
+            tools.next_fixtures,
+            tools.league_standings_string,  # Pour passer league_id, season en une seule chaîne
         ]
     
     def create_agent_executor(self, memory: ConversationBufferMemory) -> AgentExecutor:
@@ -224,4 +204,4 @@ def get_backend_instance() -> ChatBackend:
     Returns:
         ChatBackend: Ready-to-use backend instance
     """
-    return ChatBackend() 
+    return ChatBackend()
