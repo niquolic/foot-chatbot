@@ -13,55 +13,54 @@ from prompts import INITIAL_MESSAGE, CHAT_INPUT_PLACEHOLDER
 
 def setup_page():
     """
-    Configure the Streamlit page with weather theme.
+    Configure the Streamlit page with football theme.
     """
     st.set_page_config(
-        page_title="AI Weatherman",
-        page_icon="🌤️",
+        page_title="AI Football Chatbot",
+        page_icon="⚽️",
         layout="wide"
     )
     
-    # Simple header with weather theme
-    st.title("🌤️ AI Weatherman")
-    st.subheader("Your AI Weather Assistant")
+    # Simple header with football theme
+    st.title("⚽️ AI Football Chatbot")
+    st.subheader("Your AI Football Assistant")
     
     # Add weather info boxes using columns
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        st.info("🌍 **Global Coverage**\nGet weather for any city worldwide")
+        st.info("🌍 **Global Coverage**\nGet football news for any team worldwide")
     
     with col2:
-        st.info("⚡ **Real-time Data**\nTemperature, precipitation and wind")
+        st.info("⚡ **Real-time Data**\nGet football news for any team worldwide")
     
     with col3:
-        st.info("📈 **Detailed 7-Day Wind Forecasts**\nWind forecast")
+        st.info("📈 **Detailed 7-Day Wind Forecasts**\nGet football news for any team worldwide")
     
 
 def setup_sidebar():
     """
-    Create a weather-themed sidebar with information and controls.
+    Create a football-themed sidebar with information and controls.
     """
-    st.sidebar.header("🌦️ Weather Station")
+    st.sidebar.header("⚽️ Football Chatbot")
     
-    # Weather service info
+    # Football service info
     with st.sidebar.expander("📡 What can I do?"):
         st.write("""
-        I can help you get comprehensive weather information for any location.
+        I can help you get comprehensive football news for any team worldwide.
         I can query the following tools:
-        - Current temperature, precipitation and wind for any city
-        - Wind forecast for any city
-        - Get the latitude and longitude of any city
+        - Get football news for any team worldwide
+        - Get football news for any team worldwide
         """)
     
     # Quick examples
     with st.sidebar.expander("💡 Try These Examples"):
         st.write("""
         **Sample Questions:**
-        - "What's the weather in London?"
-        - "Will it rain in Tokyo tomorrow?"
-        - "Show me the wind forecast for Miami"
-        - "What's the temperature in Sydney?"
+        - "What's the football news for Manchester United?"
+        - "Show me the football news for Barcelona"
+        - "What's the football news for Real Madrid?"
+        - "What's the football news for Bayern Munich?"
         """)
     
 
@@ -106,7 +105,7 @@ def display_chat_messages(msgs):
     """
     Display chat messages with weather-themed avatars.
     """
-    avatars = {"human": "🙋‍♂️", "ai": "🌤️"}
+    avatars = {"human": "🙋‍♂️", "ai": "⚽️"}
     
     for idx, msg in enumerate(msgs.messages):
         with st.chat_message(msg.type, avatar=avatars[msg.type]):
@@ -120,7 +119,7 @@ def display_chat_messages(msgs):
 
 def display_intermediate_steps(message_index):
     """
-    Display weather tool usage with appropriate icons.
+    Display football tool usage with appropriate icons.
     """
     steps = st.session_state.steps.get(str(message_index), [])
     
@@ -130,11 +129,9 @@ def display_intermediate_steps(message_index):
         
         # Weather tool icons
         tool_icons = {
-            "geocode_city": "📍",
-            "get_city_temperature": "🌡️", 
-            "get_city_precipitation": "🌧️",
-            "get_city_wind": "💨",
-            "get_city_wind_forecast": "🌪️"
+            "get_football_news": "⚽️",
+            "get_football_news_for_any_team_worldwide": "�",
+            "get_football_news_for_any_team_worldwide": "�",
         }
         
         tool_name = step[0].tool
