@@ -1,4 +1,4 @@
-# 🌤️ AI Weatherman Chatbot Workshop
+# ⚽ AI Football Assistant Chatbot Workshop
 
 Welcome to the Advanced AI Development Workshop! In this hands-on session, you'll learn how to build, customize, and extend an AI-powered chatbot using Python, Streamlit, and LangChain.
 
@@ -7,7 +7,7 @@ Welcome to the Advanced AI Development Workshop! In this hands-on session, you'l
 By the end of this workshop, you will:
 - Understand the architecture of AI chatbot applications
 - Learn how to use LangChain for AI agent development
-- Build a working chatbot with tool integration
+- Build a working football assistant chatbot with tool integration
 - Create your own custom tools (bonus points for multiple tools!)
 - Deploy a chatbot UI with Streamlit
 
@@ -23,10 +23,10 @@ By the end of this workshop, you will:
 Our chatbot follows a clean, modular architecture:
 
 ```
-AI Weatherman Chatbot
+AI Football Assistant Chatbot
 ├── frontend.py          # Streamlit UI and user interaction
 ├── backend.py           # AI logic, memory, and agent orchestration  
-├── tools.py             # Custom tools (weather, and your additions!)
+├── tools.py             # Custom tools (football stats, and your additions!)
 ├── prompts.py           # System prompts and conversation templates
 ├── requirements.txt     # Python dependencies
 └── config.env          # Environment variables (API keys)
@@ -36,7 +36,7 @@ AI Weatherman Chatbot
 
 1. **Frontend (`frontend.py`)**: Uses [Streamlit](https://docs.streamlit.io/) to create a web interface
 2. **Backend (`backend.py`)**: Orchestrates the AI conversation using LangChain
-3. **Tools (`tools.py`)**: Extends AI capabilities beyond text (weather lookup, your custom tools!)
+3. **Tools (`tools.py`)**: Extends AI capabilities beyond text (football statistics, match results, and your custom tools!)
 4. **Memory System**: Remembers conversation context for natural dialogue
 5. **Monitoring**: Tracks AI usage and performance with Langfuse
 
@@ -59,7 +59,7 @@ A virtual environment keeps your project dependencies isolated and prevents conf
 python -m venv venv
 
 # Activate virtual environment
-venv\Scripts\activate
+. venv\Scripts\activate
 
 # You should see (venv) in your terminal prompt
 ```
@@ -181,29 +181,29 @@ The chatbot remembers conversation history using LangChain's memory system:
 Add a new tool to `tools.py`. Here are some ideas using [free APIs](https://free-apis.github.io/#/browse):
 
 **Easy Tools:**
-- 🎭 **Jokes**: Get random jokes from JokeAPI
-- 🎲 **Random Facts**: Fetch interesting facts
-- 🔤 **Word Definitions**: Dictionary API integration
+- 📊 **Match Statistics**: Get live match stats
+- 🏆 **League Tables**: Current standings
+- ⚽ **Player Stats**: Player performance data
 
 **Medium Tools:**
-- 📰 **News Headlines**: Current news from NewsAPI
-- 💱 **Currency Converter**: Exchange rate lookup
-- 🎬 **Movie Info**: OMDB API for movie details
+- 📅 **Match Schedule**: Upcoming fixtures
+- 🎯 **Team Form**: Recent performance analysis
+- 📈 **Transfer News**: Latest transfer rumors
 
 **Advanced Tools:**
-- 🌍 **Location Info**: Geocoding and location data
-- 📊 **Stock Prices**: Financial data integration
-- 🗺️ **Travel Info**: Distance and route calculation
+- 📊 **Advanced Analytics**: Detailed match analysis
+- 🎮 **Tactical Analysis**: Team formations and strategies
+- 📱 **Social Media Integration**: Latest team/player updates
 
 ### Challenge 2: Multi-Tool Integration
 
 **Bonus Points**: Create a chatbot that uses multiple tools together!
 
-Example: A travel assistant that combines:
-- Weather for destination
-- Currency conversion
-- Local news/events
-- Flight information
+Example: A football assistant that combines:
+- Live match scores
+- Player statistics
+- Team news
+- Transfer market updates
 
 ### Tool Template
 
@@ -243,7 +243,7 @@ Edit `prompts.py` to change how your AI behaves:
 
 ```python
 SYSTEM_PROMPT = """
-You are a helpful travel assistant specializing in...
+You are a knowledgeable football assistant specializing in...
 [Your custom personality here]
 """
 ```
@@ -301,5 +301,3 @@ To showcase your work:
 3. Document your additions in this README
 
 ---
-
-Happy coding!
