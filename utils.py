@@ -13,6 +13,7 @@ def create_string_input_tool(func, tool_name: str = None):
     Creates a string-input wrapper for any multi-parameter function.
     """
     # --- Correction pour les bugs Annotated, ArgsSchema, SkipValidation, Optional, Callable ---
+    print("Creating string input tool for function:", func)
     globalns = getattr(func, '__globals__', {})
     import typing
     if 'Annotated' not in globalns:
@@ -44,7 +45,7 @@ def create_string_input_tool(func, tool_name: str = None):
             values = [v.strip() for v in input_string.split(',')]
             
             if len(values) != len(param_names):
-                return f"Error: Expected {len(param_names)} comma-separated values, got {len(values)}"
+                return {"output": f"Error: Expected {len(param_names)} comma-separated values, got {len(values)}"}
             
             # Convert values to correct types
             parsed_args = []
@@ -60,10 +61,11 @@ def create_string_input_tool(func, tool_name: str = None):
                     parsed_args.append(value_str)
             
             # Call original function
-            return func(*parsed_args)
+            result = func(*parsed_args)
+            return {"output": result}
             
         except Exception as e:
-            return f"Error: {str(e)}"
+            return {"output": f"Error: {str(e)}"}
     
     # Set wrapper properties with improved documentation
     wrapper_name = tool_name or f"{func.__name__}_string"

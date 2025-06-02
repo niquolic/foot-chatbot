@@ -116,7 +116,9 @@ class ChatBackend:
         return [
             tools.search_team,
             tools.next_fixtures,
-            tools.league_standings_string,  # Pour passer league_id, season en une seule chaîne
+            tools.last_results,
+            tools.search_league,
+            tools.league_standings_string,  # <-- uniquement cette version !
         ]
     
     def create_agent_executor(self, memory: ConversationBufferMemory) -> AgentExecutor:
