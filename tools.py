@@ -98,9 +98,27 @@ def last_results(team_id: str) -> str:
     except Exception as e:
         return f"Erreur : {str(e)}"
 
+@tool
+def search_league(league_name: str) -> str:
+    """Recherche un championnat par nom et retourne son ID et son pays."""
+    try:
+        url = f"{API_URL}/leagues"
+        params = {"search": league_name}
+        response = requests.get(url, headers=HEADERS, params=params, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+        if not data.get("response"):
+            return f"Aucun championnat trouvé pour '{league_name}'."
+        league = data["response"][0]["league"]
+        country = data["response"][0]["country"]["name"]
+        return f"League : {league['name']} ({country})\nID : {league['id']}"
+    except Exception as e:
+        return f"Erreur : {str(e)}"
+
 league_standings_string = create_string_input_tool(league_standings, "league_standings")
 
 if __name__ == "__main__":
     print(search_team.invoke("manchester united"))
     print(next_fixtures.invoke("87"))
     print(league_standings.invoke({"league_id": "61", "season": "2023"}))
+    print(search_league.invoke("Ligue 1"))
