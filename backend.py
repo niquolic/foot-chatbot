@@ -115,10 +115,9 @@ class ChatBackend:
         """
         return [
             tools.search_team,
-            tools.next_fixtures,
-            tools.last_results,
             tools.search_league,
-            tools.league_standings_string,  # <-- uniquement cette version !
+            tools.league_standings,
+            tools.last_results,
         ]
     
     def create_agent_executor(self, memory: ConversationBufferMemory) -> AgentExecutor:
