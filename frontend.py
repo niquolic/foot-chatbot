@@ -1,5 +1,5 @@
 """
-LXP - Advanced AI development Workshop: AI Weatherman frontend
+LXP - Advanced AI development Workshop: AI Football Assistant frontend
 """
 
 import streamlit as st
@@ -25,17 +25,17 @@ def setup_page():
     st.title("⚽️ AI Football Chatbot")
     st.subheader("Your AI Football Assistant")
     
-    # Add weather info boxes using columns
+    # Add football info boxes using columns
     col1, col2, col3 = st.columns(3)
     
     with col1:
         st.info("🌍 **Global Coverage**\nGet football news for any team worldwide")
     
     with col2:
-        st.info("⚡ **Real-time Data**\nGet football news for any team worldwide")
+        st.info("⚡ **Real-time Data**\nGet live match updates and scores")
     
     with col3:
-        st.info("📈 **Detailed 7-Day Wind Forecasts**\nGet football news for any team worldwide")
+        st.info("📈 **Detailed Analysis**\nGet comprehensive team and player statistics")
     
 
 def setup_sidebar():
@@ -103,7 +103,7 @@ def add_reset_button(msgs):
 
 def display_chat_messages(msgs):
     """
-    Display chat messages with weather-themed avatars.
+    Display chat messages with football-themed avatars.
     """
     avatars = {"human": "🙋‍♂️", "ai": "⚽️"}
     
@@ -127,11 +127,12 @@ def display_intermediate_steps(message_index):
         if step[0].tool == "_Exception":
             continue
         
-        # Weather tool icons
+        # Football tool icons
         tool_icons = {
             "get_football_news": "⚽️",
-            "get_football_news_for_any_team_worldwide": "�",
-            "get_football_news_for_any_team_worldwide": "�",
+            "get_match_stats": "📊",
+            "get_team_info": "🏆",
+            "get_player_stats": "👤"
         }
         
         tool_name = step[0].tool
@@ -152,8 +153,8 @@ def handle_user_input(msgs, memory, backend):
         st.chat_message("human", avatar="🙋‍♂️").write(prompt)
         
         # Process through AI
-        with st.chat_message("ai", avatar="🌤️"):
-            with st.spinner("🌦️ Checking weather data..."):
+        with st.chat_message("ai", avatar="⚽️"):
+            with st.spinner("⚽️ Analyzing football data..."):
                 st_cb = StreamlitCallbackHandler(st.container(), expand_new_thoughts=False)
                 executor = backend.create_agent_executor(memory)
                 response = backend.process_message(prompt, executor, st_cb)
